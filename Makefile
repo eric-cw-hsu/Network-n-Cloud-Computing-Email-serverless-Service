@@ -7,7 +7,7 @@ apply-email-service:
 	@echo "Deploying email service..."
 	cd terraform && terraform init && terraform apply -auto-approve
 
-deploy-email-service: build-email-service destroy-email-service apply-email-service	
+deploy-email-service: build-email-service apply-email-service	
 
 destroy-email-service:
 	@echo "Destroying email service..."
