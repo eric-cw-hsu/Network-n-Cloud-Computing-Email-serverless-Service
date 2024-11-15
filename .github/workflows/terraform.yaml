@@ -21,7 +21,7 @@ jobs:
         terraform_version: latest
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform -chdir=./terraform init
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
