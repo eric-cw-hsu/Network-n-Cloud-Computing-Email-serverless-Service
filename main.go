@@ -11,6 +11,11 @@ import (
 )
 
 func handler(ctx context.Context, snsEvent events.SNSEvent) error {
+	secretValues, err := email_sender.GetSecrets(ctx)
+	if err != nil {
+		return err
+	}
+
 	for _, record := range snsEvent.Records {
 		message := record.SNS.Message
 
@@ -19,7 +24,7 @@ func handler(ctx context.Context, snsEvent events.SNSEvent) error {
 			return err
 		}
 
-		if err := email_sender.SendVerificationEmail(email); err != nil {
+		if err := email_sender.SendVerificationEmail(email, secretValues); err != nil {
 			return err
 		}
 

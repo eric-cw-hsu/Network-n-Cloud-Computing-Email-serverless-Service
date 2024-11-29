@@ -2,7 +2,6 @@ package email_sender
 
 import (
 	"fmt"
-	"os"
 )
 
 type VerificationEmail struct {
@@ -19,12 +18,12 @@ type VerificationEmail struct {
 	htmlContent      string
 }
 
-func (e *VerificationEmail) InitEmail() {
-	e.FromName = os.Getenv("EMAIL_SENDER_NAME")
-	e.FromAddr = os.Getenv("EMAIL_SENDER_ADDR")
+func (e *VerificationEmail) InitEmail(secretValues *Secrets) {
+	e.FromName = secretValues.EmailSenderName
+	e.FromAddr = secretValues.EmailSenderAddr
 	e.Subject = "Email Verification"
 
-	verifyURL := fmt.Sprintf("%s/verify?user_id=%s&token=%s", os.Getenv("WEBAPP_HOSTNAME"), e.UserId, e.Token)
+	verifyURL := fmt.Sprintf("%s/verify?user_id=%s&token=%s", secretValues.WebAppHostname, e.UserId, e.Token)
 
 	e.plainTextContent = fmt.Sprintf(`
 		Hi %s,
