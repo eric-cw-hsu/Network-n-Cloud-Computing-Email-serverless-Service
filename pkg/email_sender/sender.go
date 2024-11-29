@@ -2,7 +2,6 @@ package email_sender
 
 import (
 	"log"
-	"os"
 
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
@@ -11,11 +10,11 @@ import (
 // Verification Email Template
 var EMAIL_RETRY_LIMIT = 3
 
-func SendVerificationEmail(email VerificationEmail) error {
+func SendVerificationEmail(email VerificationEmail, secretValues *Secrets) error {
 	var err error
-	client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
+	client := sendgrid.NewSendClient(secretValues.SendGridAPIKey)
 
-	email.InitEmail()
+	email.InitEmail(secretValues)
 
 	for i := 0; i < EMAIL_RETRY_LIMIT; i++ {
 		res, err := client.Send(mail.NewSingleEmail(
@@ -31,7 +30,6 @@ func SendVerificationEmail(email VerificationEmail) error {
 		if err == nil {
 			break
 		}
-
 	}
 
 	return err
